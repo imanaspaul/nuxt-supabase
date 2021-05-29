@@ -11,7 +11,15 @@
       <div class="col-md-6">
         <div class="card border-0">
           <div class="card-body">
-            <h6>Body will goes here</h6>
+            <textarea v-model="post" class="form-control" placeholder="What's on your mind?" />
+            <button class="btn btn-success mt-4 form-control" @click="makePost">
+              Write Post
+            </button>
+          </div>
+        </div>
+        <div v-for="p in posts" :key="p.id" class="card border-0 my-2">
+          <div class="card-body">
+            <p>{{ p.desc }}</p>
           </div>
         </div>
       </div>
@@ -36,8 +44,36 @@ import { mapState } from 'vuex'
 export default {
   name: 'IndexHome',
   middleware: 'noauth',
+  data () {
+    return {
+      post: '',
+      posts: []
+    }
+  },
   computed: {
     ...mapState(['auth'])
+  },
+  created () {
+    this.getPosts()
+  },
+  methods: {
+    async getPosts () {
+      const { data: posts, error } = await this.$supabase
+        .from('posts')
+        .select('*')
+      if (!error) {
+        this.posts = posts
+      }
+    },
+    async makePost () {
+      const { data } = await this.$supabase
+        .from('posts')
+        .insert([
+          { desc: this.post, user: this.auth.user }
+        ])
+      this.posts.unshift(data[0])
+      this.post = ''
+    }
   }
 }
 </script>
