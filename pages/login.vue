@@ -28,6 +28,12 @@
 <script>
 export default {
   layout: 'auth',
+  // middleware: 'auth',
+  middleware ({ redirect, $supabase }) {
+    if ($supabase.auth.user()) {
+      return redirect('/')
+    }
+  },
   data () {
     return {
       login: false,
@@ -35,13 +41,13 @@ export default {
       password: ''
     }
   },
-  created () {
-    if (this.$supabase.auth.user()) {
-      this.$router.push('/')
-    } else if (this.$supabase.auth.user() === null) {
-      this.$router.push('/signin')
-    }
-  },
+  // created () {
+  //   if (this.$supabase.auth.user()) {
+  //     this.$router.push('/')
+  //   } else if (this.$supabase.auth.user() === null) {
+  //     this.$router.push('/signin')
+  //   }
+  // },
   methods: {
     // change login state based on selection
     changeLogin () {
@@ -58,7 +64,7 @@ export default {
           if (error) {
             alert(error.message)
           } else {
-            this.$store.dispatch('auth/setuser', data.user)
+            this.$store.dispatch('authe/setuser', data.user)
             this.$router.push('/')
           }
         })

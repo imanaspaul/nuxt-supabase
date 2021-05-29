@@ -59,13 +59,13 @@
 <script>
 export default {
   created () {
-    this.$store.dispatch('auth/getuser')
+    this.$store.dispatch('authe/getuser')
   },
   methods: {
     logout () {
       const { error } = this.$supabase.auth.signOut()
       if (!error) {
-        this.$router.push('/signin')
+        this.$router.push('/login')
       }
     }
   }

@@ -29,7 +29,7 @@
             <div class="text-center">
               <img src="https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=749&q=80" class="profile rounded" width="100px" height="100px" alt="profile">
             </div>
-            <h5 class="py-3">
+            <h5 v-if="auth" class="py-3">
               {{ auth.user.email }}
             </h5>
           </div>
@@ -43,7 +43,11 @@
 import { mapState } from 'vuex'
 export default {
   name: 'IndexHome',
-  middleware: 'noauth',
+  middleware ({ redirect, $supabase }) {
+    if ($supabase.auth.user() === null) {
+      return redirect('/login')
+    }
+  },
   async asyncData ({ $supabase }) {
     const { data: posts } = await $supabase
       .from('posts')
