@@ -44,10 +44,15 @@ import { mapState } from 'vuex'
 export default {
   name: 'IndexHome',
   middleware: 'noauth',
+  async asyncData ({ $supabase }) {
+    const { data: posts } = await $supabase
+      .from('posts')
+      .select('*')
+    return { posts }
+  },
   data () {
     return {
-      post: '',
-      posts: []
+      post: ''
     }
   },
   computed: {
@@ -55,6 +60,8 @@ export default {
   },
   created () {
     this.getPosts()
+  },
+  mounted () {
     this.getUpdates()
   },
   methods: {
@@ -62,7 +69,7 @@ export default {
       this.$supabase
         .from('posts')
         .on('*', (payload) => {
-          console.log('Change received!', payload)
+          this.posts.unshift(payload.new)
         })
         .subscribe()
     },
@@ -75,12 +82,11 @@ export default {
       }
     },
     async makePost () {
-      const { data } = await this.$supabase
+      await this.$supabase
         .from('posts')
         .insert([
           { desc: this.post, user: this.auth.user }
         ])
-      this.posts.unshift(data[0])
       this.post = ''
     }
   }
