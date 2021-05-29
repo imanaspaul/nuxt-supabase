@@ -55,8 +55,17 @@ export default {
   },
   created () {
     this.getPosts()
+    this.getUpdates()
   },
   methods: {
+    getUpdates () {
+      this.$supabase
+        .from('posts')
+        .on('*', (payload) => {
+          console.log('Change received!', payload)
+        })
+        .subscribe()
+    },
     async getPosts () {
       const { data: posts, error } = await this.$supabase
         .from('posts')
