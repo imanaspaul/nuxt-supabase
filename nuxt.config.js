@@ -29,12 +29,19 @@ export default {
   // Modules for dev and build (recommended): https://go.nuxtjs.dev/config-modules
   buildModules: [
     '@nuxtclub/supabase',
+    '@nuxtjs/google-fonts',
     '@nuxtjs/eslint-module'
   ],
   // supabase config
   supabase: {
     url: 'https://xfbsxxknzfpbdswdetdi.supabase.co',
     key: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYyMTE0MTQzOSwiZXhwIjoxOTM2NzE3NDM5fQ.LzczwufcrUtGC21RsrAcDap3_KUCshEb9ujJ0uQqmHs'
+  },
+  // google fonts
+  googleFonts: {
+    families: {
+      Lato: [100, 300, 400, 600, 800, 900]
+    }
   },
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
