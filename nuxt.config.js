@@ -43,6 +43,7 @@ export default {
       Lato: [100, 300, 400, 600, 800, 900]
     }
   },
+
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap

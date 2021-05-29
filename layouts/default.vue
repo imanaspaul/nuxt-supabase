@@ -47,19 +47,7 @@
               </nuxt-link>
             </li>
             <li class="nav-item">
-              <nuxt-link to="/" class="nav-link">
-                Sign up
-              </nuxt-link>
-            </li>
-            <li class="nav-item">
-              <nuxt-link to="/" class="nav-link">
-                Login
-              </nuxt-link>
-            </li>
-            <li class="nav-item">
-              <nuxt-link to="/" class="nav-link">
-                Logout
-              </nuxt-link>
+              <button @click="logout" class="btn btn-success">Logout</button>
             </li>
           </ul>
         </div>
@@ -68,7 +56,21 @@
     <Nuxt />
   </div>
 </template>
-
+<script>
+export default {
+  created () {
+    this.$store.dispatch('auth/getuser')
+  },
+  methods: {
+    logout () {
+      const { error } = this.$supabase.auth.signOut()
+      if (!error) {
+        this.$router.push('/signin')
+      }
+    }
+  }
+}
+</script>
 <style>
 body {
   background-color: #f0f2f5 !important;
